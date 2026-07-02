@@ -6,7 +6,7 @@ import { ProductProvider } from "@/context/ProductContext";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Marchand — Shop",
+  title: "EasyShop",
   description: "A small, well-made goods shop.",
 };
 

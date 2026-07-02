@@ -4,12 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { Role } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -17,12 +15,11 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<Role>("customer");
   const [error, setError] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const result = register(name, email, password, role);
+    const result = register(name, email, password, "customer");
     if (!result.ok) {
       setError(result.error || "Something went wrong.");
       return;
@@ -56,26 +53,6 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-            </div>
-            <div>
-              <Label>Account type</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {(["customer", "admin"] as Role[]).map((r) => (
-                  <button
-                    type="button"
-                    key={r}
-                    onClick={() => setRole(r)}
-                    className={cn(
-                      "rounded-md border px-3 py-2 text-sm font-medium capitalize transition-colors",
-                      role === r
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-surface hover:bg-surface-2"
-                    )}
-                  >
-                    {r}
-                  </button>
-                ))}
-              </div>
             </div>
             {error && <p className="text-sm text-danger">{error}</p>}
             <Button type="submit" className="mt-1">

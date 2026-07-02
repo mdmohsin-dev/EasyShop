@@ -10,7 +10,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { href: "/", label: "Shop" },
+  { href: "/", label: "Home" },
+  { href: "/shop", label: "All Products" },
   { href: "/dashboard", label: "Dashboard", protected: true },
 ];
 
@@ -36,7 +37,7 @@ export default function Navbar() {
           <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <ShoppingBag size={18} />
           </span>
-          <span className="font-display text-lg font-semibold tracking-tight">Marchand</span>
+          <span className="font-display text-lg font-semibold tracking-tight">EasyShop</span>
         </Link>
 
         {/* Center nav links (desktop) */}

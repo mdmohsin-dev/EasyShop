@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function HeroBanner() {
   return (
     <section className="border-b border-border bg-surface-2">
-      <div className="mx-auto flex max-w-6xl flex-col-reverse items-center gap-8 md:flex-row md:gap-10 py-10 md:py-16 lg:px-14 px-3 md:px-8 lg:py-40">
+      <div className="mx-auto flex max-w-6xl flex-col-reverse items-center gap-8 px-4 py-10 sm:px-6 md:flex-row md:gap-10 md:py-16">
         {/* Left: text + CTA */}
         <div className="w-full text-center md:w-1/2 md:text-left animate-float-in">
           <p className="text-xs font-semibold uppercase tracking-wider text-accent">
@@ -22,7 +22,7 @@ export default function HeroBanner() {
             Add what you like — your cart stays saved right here on this device.
           </p>
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center md:justify-start">
-            <Link href="#products" className="w-full sm:w-auto">
+            <Link href="/shop" className="w-full sm:w-auto">
               <Button size="lg" variant="accent" className="w-full sm:w-auto">
                 Shop the collection
                 <ArrowRight size={18} />
