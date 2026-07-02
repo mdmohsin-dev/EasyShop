@@ -1,12 +1,15 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Product } from "@/lib/types";
+import { Category, Product } from "@/lib/types";
 import { getProducts, saveProducts } from "@/lib/storage";
 
 const SEED_PRODUCTS: Product[] = [
   {
     id: crypto.randomUUID?.() ?? "seed-1",
+    category: "Electronics",
+    featured: true,
+    rating: 4.5,
     name: "Cedarwood Desk Lamp",
     price: 42,
     image:
@@ -15,6 +18,9 @@ const SEED_PRODUCTS: Product[] = [
   },
   {
     id: "seed-2",
+    category: "Apparel",
+    featured: false,
+    rating: 4.0,
     name: "Canvas Weekender Bag",
     price: 89,
     image:
@@ -23,6 +29,9 @@ const SEED_PRODUCTS: Product[] = [
   },
   {
     id: "seed-3",
+    category: "Electronics",
+    featured: false,
+    rating: 4.2,
     name: "Ceramic Pour-Over Set",
     price: 34,
     image:
@@ -34,7 +43,14 @@ const SEED_PRODUCTS: Product[] = [
 interface ProductContextType {
   products: Product[];
   loading: boolean;
-  addProduct: (name: string, price: number, image: string) => void;
+  addProduct: (
+    name: string,
+    price: number,
+    image: string,
+    category: Category,
+    featured: boolean,
+    rating: number
+  ) => void;
   removeProduct: (id: string) => void;
 }
 
@@ -55,9 +71,12 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }, []);
 
-  function addProduct(name: string, price: number, image: string) {
+  function addProduct(name: string, price: number, image: string, category: Category, featured: boolean, rating: number) {
     const newProduct: Product = {
       id: crypto.randomUUID(),
+      category,
+      featured,
+      rating,
       name,
       price,
       image,

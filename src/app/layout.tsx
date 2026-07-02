@@ -4,6 +4,11 @@ import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { ProductProvider } from "@/context/ProductContext";
 import Navbar from "@/components/Navbar";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+import Footer from "../Footer";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "EasyShop",
@@ -16,13 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={cn("h-full antialiased", "font-sans", geist.variable)}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <AuthProvider>
           <ProductProvider>
             <CartProvider>
               <Navbar />
               <main className="flex-1">{children}</main>
+              <Footer/>
             </CartProvider>
           </ProductProvider>
         </AuthProvider>

@@ -35,7 +35,7 @@ function AddProductForm() {
     if (!priceNum || priceNum <= 0) return setError("Enter a valid price.");
     if (!imagePreview) return setError("Please select an image.");
 
-    addProduct(name.trim(), priceNum, imagePreview);
+    addProduct(name.trim(), priceNum, imagePreview, "Electronics", false, 0);
     router.push("/dashboard");
   }
 
