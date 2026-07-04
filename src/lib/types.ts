@@ -1,31 +1,47 @@
-export type Role = "admin" | "customer";
+export type Role = "ADMIN" | "CUSTOMER";
 
-export type Category = "Electronics" | "Accessories" | "Apparel";
+export type Category = "ELECTRONICS" | "ACCESSORIES" | "APPAREL";
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string; // stored in localStorage only — demo/assignment purposes
-  role: Role;
-  createdAt: string;
-}
+export const CATEGORY_LABELS: Record<Category, string> = {
+  ELECTRONICS: "Electronics",
+  ACCESSORIES: "Accessories",
+  APPAREL: "Apparel",
+};
 
 export interface Product {
   id: string;
   name: string;
+  description: string;
   price: number;
-  image: string; // base64 data URL, chosen from local computer
+  image: string;
   category: Category;
-  rating: number; // 0–5
+  rating: number;
   featured: boolean;
   createdAt: string;
 }
 
-export interface CartItem {
+export type OrderStatus = "PENDING" | "PAID" | "FAILED" | "DELIVERED" | "CANCELLED";
+
+export interface OrderItem {
+  id: string;
   productId: string;
-  name: string;
-  price: number;
-  image: string;
   quantity: number;
+  price: number;
+  product: Product;
+}
+
+export interface Order {
+  id: string;
+  status: OrderStatus;
+  totalAmount: number;
+  transactionId: string | null;
+  createdAt: string;
+  items: OrderItem[];
+}
+
+export interface Pagination {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalItems: number;
 }

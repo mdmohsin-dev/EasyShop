@@ -1,9 +1,9 @@
 "use client";
 
-import { Category } from "@/lib/types";
+import { Category, CATEGORY_LABELS } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-const CATEGORIES: (Category | "All")[] = ["All", "Electronics", "Accessories", "Apparel"];
+const CATEGORIES: (Category | "All")[] = ["All", "ELECTRONICS", "ACCESSORIES", "APPAREL"];
 const RATING_OPTIONS = [4.5, 4, 3.5];
 
 interface FilterSidebarProps {
@@ -36,7 +36,6 @@ export default function FilterSidebar({
         </button>
       </div>
 
-      {/* Categories */}
       <div className="mb-6">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Categories</p>
         <div className="flex flex-col gap-1">
@@ -46,18 +45,15 @@ export default function FilterSidebar({
               onClick={() => onCategoryChange(c)}
               className={cn(
                 "rounded-md px-2.5 py-1.5 text-left text-sm transition-colors",
-                category === c
-                  ? "bg-primary/10 font-medium text-primary"
-                  : "text-foreground/75 hover:bg-surface-2"
+                category === c ? "bg-primary/10 font-medium text-primary" : "text-foreground/75 hover:bg-surface-2"
               )}
             >
-              {c}
+              {c === "All" ? "All" : CATEGORY_LABELS[c]}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Max price */}
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted">Max price</p>
@@ -78,7 +74,6 @@ export default function FilterSidebar({
         </div>
       </div>
 
-      {/* Minimum rating */}
       <div>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted">Minimum rating</p>
         <div className="flex flex-col gap-1.5">

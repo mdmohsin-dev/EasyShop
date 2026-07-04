@@ -1,33 +1,79 @@
 "use client";
 
-import { Product } from "@/lib/types";
+import Link from "next/link";
+import { Product, CATEGORY_LABELS } from "@/lib/types";
 import { useCart } from "@/context/CartContext";
+import { useSession } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { ShoppingCart, Star, Trash2 } from "lucide-react";
 
-export default function ProductCard({ product }: { product: Product }) {
+interface ProductCardProps {
+  product: Product;
+  onDeleted?: (id: string) => void;
+}
+
+export default function ProductCard({ product, onDeleted }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { data: session } = useSession();
+  const isAdmin = session?.user.role === "ADMIN";
+
+  async function handleDelete() {
+    if (!confirm(`Delete "${product.name}"? This can't be undone.`)) return;
+    const res = await fetch(`/api/products/${product.id}`, { method: "DELETE" });
+    if (res.ok) {
+      onDeleted?.(product.id);
+    } else {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "Could not delete this product.");
+    }
+  }
 
   return (
-    <div className="group animate-float-in overflow-hidden rounded-lg border border-border bg-surface transition-shadow hover:shadow-md">
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-2">
+    <div className="group flex flex-col overflow-hidden rounded-lg border border-border bg-surface transition-shadow hover:shadow-md">
+      <Link href={`/shop/${product.id}`} className="relative block aspect-square w-full overflow-hidden bg-surface-2">
+        {product.featured && (
+          <span className="absolute left-2 top-2 z-10 rounded-full bg-primary px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary-foreground">
+            Featured
+          </span>
+        )}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.image}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
-      </div>
-      <div className="flex items-center justify-between p-4">
-        <div className="min-w-0">
-          <h3 className="truncate font-medium">{product.name}</h3>
-          <span className="price-tag mt-1 inline-block bg-primary text-primary-foreground text-xs font-semibold py-1 pr-2">
-            ${product.price.toFixed(2)}
+      </Link>
+
+      <div className="flex flex-1 flex-col p-4">
+        <div className="mb-1 flex items-center justify-between gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+            {CATEGORY_LABELS[product.category]}
+          </span>
+          <span className="flex items-center gap-1 text-xs font-medium text-foreground/80 shrink-0">
+            <Star size={12} className="fill-accent text-accent" />
+            {product.rating.toFixed(1)}
           </span>
         </div>
-        <Button size="icon" variant="accent" onClick={() => addToCart(product)} title="Add to cart">
-          <Plus size={16} />
-        </Button>
+
+        <Link href={`/shop/${product.id}`}>
+          <h3 className="mb-1 line-clamp-2 text-sm font-medium leading-snug hover:underline sm:text-base">
+            {product.name}
+          </h3>
+        </Link>
+
+        <p className="mb-3 font-display text-lg font-semibold">${product.price.toFixed(2)}</p>
+
+        {isAdmin ? (
+          <Button className="mt-auto w-full" size="sm" variant="danger" onClick={handleDelete}>
+            <Trash2 size={15} />
+            Delete Product
+          </Button>
+        ) : (
+          <Button className="mt-auto w-full" size="sm" onClick={() => addToCart(product)}>
+            <ShoppingCart size={15} />
+            Add to Cart
+          </Button>
+        )}
       </div>
     </div>
   );

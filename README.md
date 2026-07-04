@@ -1,63 +1,72 @@
-# Marchand — Ecommerce Site (Next.js + TypeScript + Tailwind)
+# Marchand — Full-Stack Ecommerce (Next.js + Prisma + Better Auth)
 
-A small ecommerce site with role-based dashboards, a cart, and admin product management —
-all persisted in the browser's `localStorage` (no backend required).
+## Stack
+- Next.js 16 (App Router) + TypeScript
+- PostgreSQL + Prisma ORM
+- Better Auth (email/password, DB-backed sessions)
+- Cloudinary (product + profile images)
+- SSLCommerz (sandbox payment gateway)
+- Tailwind CSS v4 + hand-rolled shadcn-style components
+- recharts, lucide-react
 
-## Features
-
-- **Product list** on the home page, seeded with 3 sample products
-- **Two roles**: `admin` and `customer`, chosen at registration
-- **Cart**: add to cart, remove, increment/decrement quantity — saved to `localStorage`
-- **Admin**: add new products with an image picked from your computer (stored as base64),
-  name, and price
-- **Role-based dashboard** (only visible/accessible when logged in):
-  - Admin: total registered users + a bar chart of products created in the last 7 days
-  - Customer: their cart summary
-- **Navbar**: logo (left), nav links (center, active link highlighted), cart + user info (right),
-  fully responsive with a mobile menu
-- **Auth**: register/login saved to `localStorage` (demo-level, not hashed — fine for an assignment,
-  not production-ready)
-
-## Getting started
+## Setup
 
 ```bash
 npm install
+cp .env.example .env   # fill in real values, see below
+npx prisma generate
+npx prisma migrate dev --name init
+npx prisma db seed     # creates the one ADMIN account from SEED_ADMIN_* env vars
 npm run dev
 ```
 
-Visit `http://localhost:3000`.
+## Environment variables (see `.env.example`)
 
-A demo admin account is auto-created the first time you load the app:
+| Variable | Where to get it |
+|---|---|
+| `DATABASE_URL` | NeonDB (or any Postgres) connection string |
+| `NEXT_PUBLIC_APP_URL` | `http://localhost:3000` locally, your real domain in prod |
+| `BETTER_AUTH_SECRET` | `openssl rand -base64 32` |
+| `CLOUDINARY_*` | cloudinary.com dashboard |
+| `SSLCOMMERZ_*` | developer.sslcommerz.com sandbox registration |
+| `SEED_ADMIN_*` | whatever you want the one seeded admin's login to be |
 
-- Email: `admin@shop.com`
-- Password: `admin123`
+## How auth/roles work
 
-Or register your own account and pick "admin" or "customer" as the account type.
+- Everyone who registers through `/register` becomes a `CUSTOMER` — the `role`
+  field is explicitly blocked from client input in `lib/auth.ts`
+  (`input: false`) so nobody can promote themselves to `ADMIN` by tampering
+  with the signup request.
+- The one `ADMIN` account is created by `npx prisma db seed`, from
+  `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` in `.env`. To promote someone
+  else later, update their `role` directly in the DB (Prisma Studio: `npx
+  prisma studio`).
 
-## Tech stack
+## How the guest cart → DB cart merge works
 
-- Next.js 16 (App Router) + TypeScript
-- Tailwind CSS v4
-- Hand-rolled shadcn/ui-style components (Button, Input, Label, Card) — the shadcn CLI
-  registry wasn't reachable from this environment, so these were written by hand in the
-  same style; you can swap them for `npx shadcn add ...` locally if you want the originals
-- `recharts` for the dashboard bar chart
-- `lucide-react` for icons
+- Not logged in: cart lives in `localStorage` (`CartContext.tsx`).
+- The moment `useSession()` reports a logged-in user, `CartContext` POSTs the
+  guest cart to `/api/cart/merge` once, then switches to reading/writing the
+  DB-backed cart for the rest of the session.
 
-## Deploying (for your "Live Link")
+## Payment flow (SSLCommerz)
 
-The easiest option is Vercel:
+1. `/checkout` → `POST /api/orders` turns the cart into a `PENDING` order.
+2. `POST /api/payment/init` starts an SSLCommerz session for that order and
+   returns a `GatewayPageURL`; the browser is redirected there.
+3. SSLCommerz's servers POST back to `/api/payment/success` (or `/fail`,
+   `/cancel`) directly — not through the user's browser, so those routes
+   don't check a session cookie; they re-validate the payment with
+   SSLCommerz itself using `val_id` before trusting it, then update the
+   order and redirect the user to `/checkout/success` or `/checkout/fail`.
 
-1. Push this project to a GitHub repo
-2. Go to vercel.com/new, import the repo
-3. Leave the defaults (Next.js is auto-detected) and click Deploy
-4. You'll get a live URL to submit
+## Things worth knowing before you deploy
 
-## Notes / things to know
-
-- All data (users, products, cart) lives in the browser's `localStorage`, so it's
-  per-device/per-browser, not shared across users — that matches the assignment spec.
-- Images are stored as base64 strings in `localStorage`. Fine for a demo, not efficient for
-  a real app with many/large images.
-- Passwords are stored in plain text in `localStorage` for demo purposes only. Never do this
-  in a real production app.
+- This sandbox couldn't run `npx prisma generate` or connect to a real
+  Postgres instance (its network is restricted), so the Prisma-dependent
+  code was written and type-checked as carefully as possible but never run
+  end-to-end. Run it locally first and watch for anything Prisma-specific.
+- SSLCommerz sandbox credentials are required to test payment — real charges
+  won't happen in sandbox mode (`SSLCOMMERZ_IS_LIVE=false`).
+- Image uploads go straight to Cloudinary; nothing is stored as base64
+  anymore.

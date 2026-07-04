@@ -1,17 +1,25 @@
 "use client";
 
-import { useMemo } from "react";
-import { useProducts } from "@/context/ProductContext";
+import { useEffect, useState } from "react";
+import { Product } from "@/lib/types";
 import ProductCard from "@/components/ProductCard";
 
 export default function LatestProducts() {
-  const { products, loading } = useProducts();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // products are stored newest-first (see ProductContext.addProduct), so the
-  // first 3 are always the latest 3 added — no extra sorting needed.
-  const latestProducts = useMemo(() => products.slice(0, 3), [products]);
+  useEffect(() => {
+    fetch("/api/products?limit=3&sort=featured")
+      .then((res) => res.json())
+      .then((data) => setProducts(data.products))
+      .finally(() => setLoading(false));
+  }, []);
 
-  if (loading || latestProducts.length === 0) return null;
+  if (loading || products.length === 0) return null;
+
+  function handleProductDeleted(id: string) {
+    setProducts((prev) => prev.filter((p) => p.id !== id));
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
@@ -25,8 +33,8 @@ export default function LatestProducts() {
         </a>
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {latestProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} onDeleted={handleProductDeleted} />
         ))}
       </div>
     </div>
