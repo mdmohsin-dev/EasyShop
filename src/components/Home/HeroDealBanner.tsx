@@ -70,7 +70,7 @@ export default function HeroDealBanner() {
     );
 
     return (
-        <section className="w-full overflow-hidden bg-slate-100">
+        <section className="w-full overflow-hidden bg-slate-100 mb-20">
 
             <div className="mx-auto max-w-7xl">
                 <div className="flex flex-col md:flex-row items-center justify-between min-h-72 md:min-h-85 lg:min-h-96">

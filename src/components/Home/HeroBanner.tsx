@@ -16,7 +16,7 @@ const HERO_IMAGES = [
 export default function HeroBanner() {
   return (
     <section className="border-b border-border bg-surface-2">
-      <div className="mx-auto flex max-w-6xl flex-col-reverse items-center gap-8 px-4 py-10 sm:px-6 md:flex-row md:gap-10 md:py-16">
+      <div className="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-10 sm:px-6 md:flex-row md:gap-10 md:py-16">
         {/* Left: text + CTA */}
         <div className="w-full text-center md:w-1/2 md:text-left animate-float-in">
           <p className="text-xs font-semibold uppercase tracking-wider text-accent">
@@ -30,19 +30,13 @@ export default function HeroBanner() {
             Every piece in the shop is picked for how it's made, not just how it looks.
             Add what you like — your cart stays saved right here on this device.
           </p>
-          <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center md:justify-start">
-            <Link href="/shop" className="w-full sm:w-auto">
-              <Button size="lg" variant="accent" className="w-full sm:w-auto">
-                Shop the collection
-                <ArrowRight size={18} />
-              </Button>
-            </Link>
-            <Link href="/register" className="w-full sm:w-auto">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Create an account
-              </Button>
-            </Link>
-          </div>
+
+          <Link href="/shop" className="w-full sm:w-auto">
+            <Button size="lg" variant="accent" className="w-full sm:w-auto mt-6">
+              Explore Collection
+              <ArrowRight size={18} />
+            </Button>
+          </Link>
         </div>
 
         {/* Right: image */}
