@@ -6,6 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { useSession } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star, Trash2 } from "lucide-react";
+import Image from "next/image";
 
 interface ProductCardProps {
   product: Product;
@@ -37,16 +38,18 @@ export default function ProductCard({ product, onDeleted }: ProductCardProps) {
           </span>
         )}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={product.image}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          width={300}
+          height={300}
         />
       </Link>
 
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-1 flex items-center justify-between gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-primary">
             {CATEGORY_LABELS[product.category]}
           </span>
           <span className="flex items-center gap-1 text-xs font-medium text-foreground/80 shrink-0">
@@ -56,7 +59,7 @@ export default function ProductCard({ product, onDeleted }: ProductCardProps) {
         </div>
 
         <Link href={`/shop/${product.id}`}>
-          <h3 className="mb-1 line-clamp-2 text-sm font-medium leading-snug hover:underline sm:text-base">
+          <h3 className="mb-1 line-clamp-2 text-md lg:text-lg font-medium leading-snug hover:underline ">
             {product.name}
           </h3>
         </Link>

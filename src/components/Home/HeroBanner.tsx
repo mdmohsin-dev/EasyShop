@@ -3,6 +3,15 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BannerImageSlider from "./BannerImageSlider";
+
+// TODO: replace these with real product photos when ready — the slider
+// itself needs no changes, just swap the URLs in this array.
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80",
+  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80",
+  "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&q=80",
+];
 
 export default function HeroBanner() {
   return (
@@ -38,14 +47,7 @@ export default function HeroBanner() {
 
         {/* Right: image */}
         <div className="w-full md:w-1/2 animate-float-in">
-          <div className="price-tag relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-surface shadow-sm sm:aspect-[16/10]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"
-              alt="Featured products laid out on a table"
-              className="h-full w-full object-cover"
-            />
-          </div>
+          <BannerImageSlider images={HERO_IMAGES} alt="Featured products" />
         </div>
       </div>
     </section>

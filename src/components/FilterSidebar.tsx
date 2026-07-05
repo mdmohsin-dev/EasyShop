@@ -28,7 +28,7 @@ export default function FilterSidebar({
   onReset,
 }: FilterSidebarProps) {
   return (
-    <aside className="h-fit w-full shrink-0 rounded-lg border border-border bg-surface p-5 sm:w-64">
+    <aside className="h-fit md:sticky md:top-[70px] w-full shrink-0 rounded-lg border border-border bg-surface p-5 sm:w-64 xl:w-72">
       <div className="mb-5 flex items-center justify-between">
         <h2 className="text-sm font-semibold">Filters</h2>
         <button onClick={onReset} className="text-xs font-medium text-primary hover:underline">

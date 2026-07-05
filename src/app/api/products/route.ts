@@ -23,14 +23,14 @@ export async function GET(request: NextRequest) {
   if (maxPrice) where.price = { lte: Number(maxPrice) };
   if (minRating) where.rating = { gte: Number(minRating) };
 
-  const orderBy: Prisma.ProductOrderByWithRelationInput =
+  const orderBy: Prisma.ProductOrderByWithRelationInput[] =
     sort === "price-asc"
-      ? { price: "asc" }
+      ? [{ price: "asc" }, { createdAt: "desc" }]
       : sort === "price-desc"
-      ? { price: "desc" }
-      : sort === "rating-desc"
-      ? { rating: "desc" }
-      : { featured: "desc" };
+        ? [{ price: "desc" }, { createdAt: "desc" }]
+        : sort === "rating-desc"
+          ? [{ rating: "desc" }, { createdAt: "desc" }]
+          : [{ featured: "desc" }, { createdAt: "desc" }];
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({

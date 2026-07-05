@@ -83,7 +83,7 @@ function AddProductForm() {
       return;
     }
 
-    router.push("/dashboard/products");
+    router.push("/shop");
   }
 
   return (

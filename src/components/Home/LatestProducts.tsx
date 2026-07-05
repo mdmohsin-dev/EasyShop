@@ -9,7 +9,7 @@ export default function LatestProducts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/products?limit=3&sort=featured")
+    fetch("/api/products?limit=4&sort=featured")
       .then((res) => res.json())
       .then((data) => setProducts(data.products))
       .finally(() => setLoading(false));
@@ -22,7 +22,7 @@ export default function LatestProducts() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 mb-20">
       <div className="mb-8 flex items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-accent">Just added</p>
@@ -32,7 +32,7 @@ export default function LatestProducts() {
           View all
         </a>
       </div>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} onDeleted={handleProductDeleted} />
         ))}
