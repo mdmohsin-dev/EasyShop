@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
+  Area,
   Bar,
   BarChart,
   CartesianGrid,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -38,7 +41,7 @@ function AdminDashboard() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-semibold sm:text-3xl">Admin dashboard</h1>
@@ -93,13 +96,65 @@ function AdminDashboard() {
         </CardHeader>
         <CardContent className="h-72 pt-2">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={stats?.weeklyProductChart ?? []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-              <XAxis dataKey="label" stroke="var(--muted)" fontSize={12} tickLine={false} axisLine={false} />
-              <YAxis stroke="var(--muted)" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
-              <Tooltip contentStyle={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 13 }} />
-              <Bar dataKey="count" fill="var(--primary)" radius={[4, 4, 0, 0]} />
-            </BarChart>
+            <LineChart data={stats?.weeklyProductChart ?? []}>
+              <defs>
+                <linearGradient id="fillGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#60A5FA" stopOpacity={0.35} />
+                  <stop offset="95%" stopColor="#60A5FA" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+
+              <CartesianGrid
+                stroke="#1e3a5f"
+                strokeDasharray="1 5"
+                vertical
+              />
+
+              <XAxis
+                dataKey="label"
+                tickLine={false}
+                axisLine={false}
+                stroke="#6b7280"
+              />
+
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                stroke="#6b7280"
+                allowDecimals={false}
+              />
+
+              <Tooltip
+                contentStyle={{
+                  background: "#111827",
+                  border: "1px solid #374151",
+                  borderRadius: 10,
+                }}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="count"
+                stroke="none"
+                fill="url(#fillGradient)"
+              />
+
+              <Line
+                type="monotone"
+                dataKey="count"
+                stroke="#60A5FA"
+                strokeWidth={4}
+                dot={{
+                  r: 5,
+                  fill: "#60A5FA",
+                  stroke: "#93C5FD",
+                  strokeWidth: 2,
+                }}
+                activeDot={{
+                  r: 7,
+                }}
+              />
+            </LineChart>
           </ResponsiveContainer>
         </CardContent>
       </Card>

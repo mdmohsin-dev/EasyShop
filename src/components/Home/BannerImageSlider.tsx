@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Image, { StaticImageData } from "next/image";
+
+const MotionImage = motion(Image);
 
 interface BannerImageSliderProps {
-  images: string[];
+  images: (string | StaticImageData)[];
   alt: string;
   intervalMs?: number;
 }
 
-export default function BannerImageSlider({ images, alt, intervalMs = 4000 }: BannerImageSliderProps) {
+export default function BannerImageSlider({ images, alt, intervalMs = 3000 }: BannerImageSliderProps) {
   const [index, setIndex] = useState(0);
 
   // setInterval only decides WHEN to advance to the next slide — the actual
@@ -23,15 +26,17 @@ export default function BannerImageSlider({ images, alt, intervalMs = 4000 }: Ba
   }, [images.length, intervalMs]);
 
   return (
-    <div className="price-tag relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-surface shadow-sm sm:aspect-[16/10]">
+    <div className=" aspect-4/3 w-full overflow-hidden bg-surface rounded-xl shadow-sm sm:aspect-16/10">
       <AnimatePresence>
-        <motion.img
-          key={images[index]}
+        <MotionImage
+          key={index}
           src={images[index]}
           alt={`${alt} ${index + 1}`}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover rounded-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          width={500}
+          height={500}
           exit={{ opacity: 0 }}
           transition={{ duration: 2, ease: "easeInOut" }}
         />

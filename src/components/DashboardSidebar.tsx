@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  ShoppingBag,
   LayoutDashboard,
   Package,
   Users,
@@ -11,10 +12,7 @@ import {
   UserCircle,
   Home,
   LogOut,
-  Menu,
   X,
-  ChevronsLeft,
-  ChevronsRight,
 } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -26,8 +24,15 @@ interface SidebarUser {
   role: string;
 }
 
+interface DashboardSidebarProps {
+  user: SidebarUser;
+  open: boolean;
+  onClose: () => void;
+}
+
 const ADMIN_LINKS = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
+  { href: "/shop", label: "Products", icon: Package },
   { href: "/dashboard/users", label: "Users", icon: Users },
   { href: "/dashboard/orders", label: "Orders", icon: ClipboardList },
 ];
@@ -37,43 +42,50 @@ const CUSTOMER_LINKS = [
   { href: "/dashboard/orders", label: "My Orders", icon: ClipboardList },
 ];
 
-export default function DashboardSidebar({ user }: { user: SidebarUser }) {
+function SidebarBody({
+  user,
+  links,
+  collapsed,
+  onNavigate,
+  onLogout,
+  onCloseButtonClick,
+}: {
+  user: SidebarUser;
+  links: typeof ADMIN_LINKS;
+  collapsed: boolean;
+  onNavigate: () => void;
+  onLogout: () => void;
+  onCloseButtonClick?: () => void;
+}) {
   const pathname = usePathname();
-  const router = useRouter();
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
-  const links = user.role === "ADMIN" ? ADMIN_LINKS : CUSTOMER_LINKS;
-
-  async function handleLogout() {
-    await signOut();
-    router.push("/");
-    router.refresh();
-  }
-
-  const sidebarContent = (
+  return (
     <div className="flex h-full flex-col bg-surface">
-      {/* Top: collapse toggle (desktop only) */}
-      <div className="flex items-center justify-between border-b border-border p-3">
-        {!collapsed && <span className="px-2 text-xs font-semibold uppercase tracking-wide text-muted">Dashboard</span>}
-        <button
-          onClick={() => setCollapsed((c) => !c)}
-          className="hidden h-8 w-8 items-center justify-center rounded-md hover:bg-surface-2 md:flex"
-          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          {collapsed ? <ChevronsRight size={16} /> : <ChevronsLeft size={16} />}
-        </button>
-        <button
-          onClick={() => setMobileOpen(false)}
-          className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-surface-2 md:hidden"
-        >
-          <X size={16} />
-        </button>
+      {/* Logo — the open/close arrow lives in the top navbar on desktop;
+          on mobile an X shows here in the top-right corner instead. */}
+      <div className="flex items-center justify-between border-b border-border p-[15px]">
+        <Link href="/" className="flex min-w-0 items-center gap-2">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
+            <ShoppingBag size={18} />
+          </span>
+          {!collapsed && (
+            <span className="truncate font-display text-base font-semibold tracking-tight">Marchand</span>
+          )}
+        </Link>
+
+        {onCloseButtonClick && (
+          <button
+            onClick={onCloseButtonClick}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md hover:bg-surface-2"
+            aria-label="Close sidebar"
+          >
+            <X size={18} />
+          </button>
+        )}
       </div>
 
-      {/* Nav links */}
-      <nav className="flex-1 space-y-1 p-2">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-2">
         {links.map((link) => {
           const active = pathname === link.href;
           const Icon = link.icon;
@@ -81,7 +93,7 @@ export default function DashboardSidebar({ user }: { user: SidebarUser }) {
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={onNavigate}
               title={collapsed ? link.label : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
@@ -96,7 +108,6 @@ export default function DashboardSidebar({ user }: { user: SidebarUser }) {
         })}
       </nav>
 
-      {/* Bottom: Home, Profile, Logout */}
       <div className="space-y-1 border-t border-border p-2">
         <Link
           href="/"
@@ -139,7 +150,7 @@ export default function DashboardSidebar({ user }: { user: SidebarUser }) {
                 Profile
               </Link>
               <button
-                onClick={handleLogout}
+                onClick={onLogout}
                 className="flex w-full items-center gap-2 rounded px-2.5 py-1.5 text-left text-sm text-danger hover:bg-danger/10"
               >
                 <LogOut size={14} /> Log out
@@ -150,31 +161,63 @@ export default function DashboardSidebar({ user }: { user: SidebarUser }) {
       </div>
     </div>
   );
+}
+
+export default function DashboardSidebar({ user, open, onClose }: DashboardSidebarProps) {
+  const router = useRouter();
+  const links = user.role === "ADMIN" ? ADMIN_LINKS : CUSTOMER_LINKS;
+
+  async function handleLogout() {
+    await signOut();
+    router.push("/");
+    router.refresh();
+  }
 
   return (
     <>
-      {/* Mobile: floating open button */}
-      {!mobileOpen && (
-        <button
-          onClick={() => setMobileOpen(true)}
-          className="fixed bottom-4 left-4 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg md:hidden"
-        >
-          <Menu size={20} />
-        </button>
-      )}
-
-      {/* Desktop sidebar */}
-      <aside className={cn("hidden shrink-0 border-r border-border transition-all duration-200 md:block", collapsed ? "w-16" : "w-56")}>
-        {sidebarContent}
+      {/* Desktop: stays in the layout, toggles between full width and icon-only.
+          Never fully hidden on md+ screens. */}
+      <aside
+        className={cn(
+          "sticky top-0 hidden h-screen shrink-0 border-r border-border transition-all duration-200 md:block",
+          open ? "w-56" : "w-16"
+        )}
+      >
+        <SidebarBody user={user} links={links} collapsed={!open} onNavigate={() => {}} onLogout={handleLogout} />
       </aside>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-64 animate-float-in border-r border-border">{sidebarContent}</aside>
-        </div>
-      )}
+      {/* Mobile: always mounted (never unmounted), so both opening AND
+          closing animate smoothly via CSS transitions on transform/opacity
+          instead of the drawer just vanishing instantly on close. */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 md:hidden",
+          open ? "pointer-events-auto" : "pointer-events-none"
+        )}
+      >
+        <div
+          className={cn(
+            "absolute inset-0 bg-black/40 transition-opacity duration-300",
+            open ? "opacity-100" : "opacity-0"
+          )}
+          onClick={onClose}
+        />
+        <aside
+          className={cn(
+            "absolute left-0 top-0 h-full w-64 border-r border-border transition-transform duration-300 ease-in-out",
+            open ? "translate-x-0" : "-translate-x-full"
+          )}
+        >
+          <SidebarBody
+            user={user}
+            links={links}
+            collapsed={false}
+            onNavigate={onClose}
+            onLogout={handleLogout}
+            onCloseButtonClick={onClose}
+          />
+        </aside>
+      </div>
     </>
   );
 }

@@ -22,7 +22,7 @@ export default function LatestProducts() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 mb-20">
+    <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 mb-24">
       <div className="mb-8 flex items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-accent">Just added</p>

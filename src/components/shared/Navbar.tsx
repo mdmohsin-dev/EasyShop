@@ -32,13 +32,13 @@ export default function Navbar() {
   const visibleLinks = navLinks.filter((link) => !link.protected || user);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-border bg-surface/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <ShoppingBag size={18} />
           </span>
-          <span className="font-display text-lg font-semibold tracking-tight">Marchand</span>
+          <span className="font-display text-lg font-semibold tracking-tight">EasyShop</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -69,20 +69,16 @@ export default function Navbar() {
 
           {user ? (
             <div className="hidden sm:flex items-center gap-2">
-              <Link href="/dashboard/profile" className="flex items-center gap-2 rounded-md border border-border px-2.5 py-1.5 hover:bg-surface-2">
+              <Link href="/dashboard/profile">
                 {user.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={user.image} alt={user.name} className="h-6 w-6 rounded-full object-cover" />
+                  <img src={user.image} alt={user.name} className="h-9 w-9 rounded-full object-cover" />
                 ) : (
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-surface-2">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-2">
                     <UserIcon size={13} />
                   </span>
                 )}
-                <span className="text-sm font-medium">{user.name.split(" ")[0]}</span>
               </Link>
-              <Button variant="ghost" size="icon" onClick={handleLogout} title="Log out">
-                <LogOut size={16} />
-              </Button>
             </div>
           ) : (
             <Link href="/login" className="hidden sm:block">

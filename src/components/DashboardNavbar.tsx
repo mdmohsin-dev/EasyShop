@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, UserCircle, LogOut } from "lucide-react";
+import { UserCircle, LogOut, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 
 interface DashboardNavbarUser {
@@ -12,7 +12,13 @@ interface DashboardNavbarUser {
   image?: string | null;
 }
 
-export default function DashboardNavbar({ user }: { user: DashboardNavbarUser }) {
+interface DashboardNavbarProps {
+  user: DashboardNavbarUser;
+  sidebarOpen: boolean;
+  onToggleSidebar: () => void;
+}
+
+export default function DashboardNavbar({ user, sidebarOpen, onToggleSidebar }: DashboardNavbarProps) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -23,13 +29,16 @@ export default function DashboardNavbar({ user }: { user: DashboardNavbarUser })
   }
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-surface px-4 sm:px-6">
-      <Link href="/" className="flex items-center gap-2">
-        <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-          <ShoppingBag size={18} />
-        </span>
-        <span className="font-display text-lg font-semibold tracking-tight">Marchand</span>
-      </Link>
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-surface px-4 sm:px-6">
+      {/* Sidebar toggle — same arrow controls it on every screen size */}
+      <button
+        onClick={onToggleSidebar}
+        className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-surface-2"
+        title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+        aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+      >
+        {sidebarOpen ? <ChevronsLeft size={18} /> : <ChevronsRight size={18} />}
+      </button>
 
       <div className="relative">
         <button

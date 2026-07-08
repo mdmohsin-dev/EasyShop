@@ -55,13 +55,34 @@ export async function POST(request: NextRequest) {
     ship_country: "Bangladesh",
   };
 
-  await prisma.order.update({ where: { id: order.id }, data: { transactionId: tran_id } });
-
-  const apiResponse = await getSslClient().init(data);
-
-  if (!apiResponse?.GatewayPageURL) {
-    return NextResponse.json({ error: "Could not start payment session" }, { status: 502 });
+  // fail fast with a clear message instead of letting the SDK throw an
+  // opaque error when these are missing/blank in .env
+  if (!process.env.SSLCOMMERZ_STORE_ID || !process.env.SSLCOMMERZ_STORE_PASSWORD) {
+    return NextResponse.json(
+      { error: "Payment gateway isn't configured yet (missing SSLCOMMERZ_STORE_ID / SSLCOMMERZ_STORE_PASSWORD in .env)." },
+      { status: 500 }
+    );
   }
 
-  return NextResponse.json({ gatewayUrl: apiResponse.GatewayPageURL });
+  await prisma.order.update({ where: { id: order.id }, data: { transactionId: tran_id } });
+
+  try {
+    const apiResponse = await getSslClient().init(data);
+
+    if (!apiResponse?.GatewayPageURL) {
+      console.error("SSLCommerz init() returned no GatewayPageURL:", apiResponse);
+      return NextResponse.json(
+        { error: "SSLCommerz rejected the payment request — check the store ID/password and that they're sandbox credentials." },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json({ gatewayUrl: apiResponse.GatewayPageURL });
+  } catch (err) {
+    console.error("SSLCommerz init() threw:", err);
+    return NextResponse.json(
+      { error: "Could not reach SSLCommerz. Check your network and SSLCOMMERZ_* credentials." },
+      { status: 502 }
+    );
+  }
 }

@@ -4,35 +4,37 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BannerImageSlider from "./BannerImageSlider";
+import headphone from "@/assets/headphone.jpg"
+import smartWatch from "@/assets/smartwatch.jpg"
+import airbuds from "@/assets/airbuds.jpg"
 
-// TODO: replace these with real product photos when ready — the slider
-// itself needs no changes, just swap the URLs in this array.
+
 const HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80",
-  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80",
-  "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&q=80",
+  smartWatch,
+  headphone,
+  airbuds
 ];
 
 export default function HeroBanner() {
   return (
     <section className="border-b border-border bg-surface-2">
-      <div className="mx-auto flex max-w-7xl flex-col-reverse items-center gap-8 px-4 py-10 sm:px-6 md:flex-row md:gap-10 md:py-16">
+      <div className="mx-auto flex max-w-7xl flex-col-reverse items-center md:flex-row px-4 py-36 justify-between">
         {/* Left: text + CTA */}
-        <div className="w-full text-center md:w-1/2 md:text-left animate-float-in">
+        <div className="w-full text-center md:w-1/2 md:text-left animate-float-in flex flex-col gap-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-accent">
             New season, small batch
           </p>
-          <h1 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl">
+          <h1 className="font-display text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl">
             Well-made things,
             <br className="hidden sm:block" /> plainly priced.
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-sm text-muted sm:text-base md:mx-0">
+          <p className="mx-auto max-w-md text-sm text-muted sm:text-base md:mx-0">
             Every piece in the shop is picked for how it's made, not just how it looks.
             Add what you like — your cart stays saved right here on this device.
           </p>
 
           <Link href="/shop" className="w-full sm:w-auto">
-            <Button size="lg" variant="accent" className="w-full sm:w-auto mt-6">
+            <Button size="lg" variant="accent" className="w-full sm:w-auto">
               Explore Collection
               <ArrowRight size={18} />
             </Button>
