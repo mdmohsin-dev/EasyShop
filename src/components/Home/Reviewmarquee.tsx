@@ -99,12 +99,12 @@ export default function ReviewMarquee() {
         <div className="max-w-7xl mx-auto overflow-hidden relative text-black mb-24">
             <div
                 className="absolute inset-y-0 left-0 md:w-20 w-9 z-10 pointer-events-none"
-                style={{ background: 'linear-gradient(to right, #F7F5F0, transparent)' }}
+                style={{ background: 'linear-gradient(to right, #0B0D0C, transparent)' }}
             />
             {/* Right fade mask */}
             <div
                 className="absolute inset-y-0 right-0 md:w-20 w-9 z-10 pointer-events-none"
-                style={{ background: 'linear-gradient(to left, #F7F5F0, transparent)' }}
+                style={{ background: 'linear-gradient(to left, #0B0D0C, transparent)' }}
             />
             <Marquee speed={35} pauseOnHover gradient gradientColor="#ffffff" gradientWidth={80}>
                 {reviews.map((review) => (

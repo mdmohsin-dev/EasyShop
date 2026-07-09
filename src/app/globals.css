@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F7F5F0;
-  --foreground: #22201D;
-  --surface: #FFFFFF;
-  --surface-2: #F0ECE3;
-  --border: #E4DFD3;
-  --primary: #1F4B3F;
-  --primary-foreground: #F7F5F0;
-  --accent: #C99A3A;
-  --accent-foreground: #22201D;
-  --danger: #B23A2E;
-  --danger-foreground: #FFFFFF;
-  --muted: #8A8478;
+  --background: #0B0D0C;
+  --foreground: #F2F4F2;
+  --surface: #16181A;
+  --surface-2: #1F2224;
+  --border: #2A2D2F;
+  --primary: #A6FF4D;
+  --primary-foreground: #0B0D0C;
+  --accent: #A6FF4D;
+  --accent-foreground: #0B0D0C;
+  --danger: #FF6B5E;
+  --danger-foreground: #0B0D0C;
+  --muted: #9AA09C;
   --radius: 0.65rem;
 }
 
@@ -71,22 +71,4 @@ body {
 }
 .animate-float-in {
   animation: float-in 0.35s ease-out both;
-}
-
-/* Continuous auto-slide for the reviews marquee — the track holds two
-   copies of the same cards back to back, so translating by exactly -50%
-   loops seamlessly with no jump. Pauses on hover so people can read. */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.animate-marquee {
-  animation: marquee 32s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-* {
-  border-color: var(--border);
 }
