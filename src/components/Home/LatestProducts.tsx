@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import ProductCard from "@/components/Product/ProductCard";
 import { Product } from "@/lib/types";
-import ProductCard from "@/components/ProductCard";
+import { useEffect, useState } from "react";
 
 export default function LatestProducts() {
   const [products, setProducts] = useState<Product[]>([]);

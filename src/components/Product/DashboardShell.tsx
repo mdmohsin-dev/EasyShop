@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import DashboardNavbar from "@/components/DashboardNavbar";
-import DashboardSidebar from "@/components/DashboardSidebar";
+import DashboardNavbar from "@/components/Dashboard/DashboardNavbar";
+import DashboardSidebar from "@/components/Dashboard/DashboardSidebar";
 
 interface DashboardUser {
   name: string;

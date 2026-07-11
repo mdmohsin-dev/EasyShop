@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { LayoutGrid, List } from "lucide-react";
-import { Category, Product, Pagination as PaginationType } from "@/lib/types";
-import ProductCard from "@/components/ProductCard";
-import ProductListItem from "@/components/ProductListItem";
-import FilterSidebar from "@/components/FilterSidebar";
-import Pagination from "@/components/Pagination";
+import FilterSidebar from "@/components/Product/FilterSidebar";
+import Pagination from "@/components/Product/Pagination";
+import ProductCard from "@/components/Product/ProductCard";
+import ProductListItem from "@/components/Product/ProductListItem";
+import { Category, Pagination as PaginationType, Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { LayoutGrid, List } from "lucide-react";
+import { useEffect, useState } from "react";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating-desc";
 

@@ -57,9 +57,9 @@ const reviews: Review[] = [
 
 function ReviewCard({ review }: { review: Review }) {
     return (
-        <div className="mx-3 flex w-[320px] shrink-0 flex-col gap-4 rounded-2xl
-        border border-slate-200 bg-white p-6 shadow-sm
-        transition-shadow duration-300 hover:shadow-lg text-black">
+        <div className="mx-4 flex w-[350px] shrink-0 flex-col gap-5 rounded-2xl
+        border border-gray-800 bg-[#16181A] p-6 shadow-sm
+        transition-shadow duration-300 hover:shadow-lg text-white">
             <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
                     <Star
@@ -71,21 +71,21 @@ function ReviewCard({ review }: { review: Review }) {
                                 : "fill-slate-200 text-slate-200"} />))}
             </div>
 
-            <p className="text-sm leading-relaxed text-black">
+            <p className="text-sm leading-relaxed text-white">
                 “{review.text}”
             </p>
 
-            <div className="mt-auto flex items-center gap-3 pt-2">
+            <div className="mt-auto flex items-center gap-4 pt-2">
                 <img
                     src={review.avatar}
                     alt={review.name}
-                    className="h-10 w-10 rounded-full object-cover"
+                    className="h-12 w-12 rounded-full object-cover"
                 />
                 <div>
-                    <p className="text-sm font-semibold text-black">
+                    <p className="text-sm font-semibold text-white">
                         {review.name}
                     </p>
-                    <p className="text-xs text-black/60">
+                    <p className="text-xs text-white/60">
                         {review.role}
                     </p>
                 </div>
@@ -96,7 +96,7 @@ function ReviewCard({ review }: { review: Review }) {
 
 export default function ReviewMarquee() {
     return (
-        <div className="max-w-7xl mx-auto overflow-hidden relative text-black mb-24">
+        <div className="max-w-7xl mx-auto overflow-hidden relative text-white mb-24">
             <div
                 className="absolute inset-y-0 left-0 md:w-20 w-9 z-10 pointer-events-none"
                 style={{ background: 'linear-gradient(to right, #0B0D0C, transparent)' }}
@@ -106,7 +106,7 @@ export default function ReviewMarquee() {
                 className="absolute inset-y-0 right-0 md:w-20 w-9 z-10 pointer-events-none"
                 style={{ background: 'linear-gradient(to left, #0B0D0C, transparent)' }}
             />
-            <Marquee speed={35} pauseOnHover gradient gradientColor="#ffffff" gradientWidth={80}>
+            <Marquee speed={35} pauseOnHover gradient gradientColor="#0B0D0C" gradientWidth={80}>
                 {reviews.map((review) => (
                     <ReviewCard key={review.id} review={review} />
                 ))}
