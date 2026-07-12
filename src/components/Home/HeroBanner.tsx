@@ -38,10 +38,10 @@ export default function HeroBanner() {
 
       <div className="relative mx-auto w-full max-w-7xl px-4 py-14 xl:py-36">
 
-        <div className="flex justify-between items-center w-full ">
+        <div className="flex flex-col lg:flex-row lg:gap-0 md:gap-10 justify-between items-center w-full ">
 
           {/* Left: text + CTA */}
-          <div className="text-center flex flex-col gap-10 animate-float-in lg:text-left">
+          <div className="text-center flex flex-col lg:gap-10 gap-6 animate-float-in lg:text-left">
             <h1 className="font-display text-4xl font-bold leading-[1.1] text-foreground sm:text-5xl lg:text-[2.75rem]">
               Smart Choices for <br className="hidden md:flex" /> Smarter Living
             </h1>
@@ -63,7 +63,7 @@ export default function HeroBanner() {
               <Image
                 src={banner}
                 alt="Featured product"
-                className="relative h-full w-[500px] object-cover"
+                className="relative h-full lg:w-[500px] w-[400px] object-cover"
                 // style={{ filter: "drop-shadow(0 0 40px rgba(166, 255, 77, 0.15))" }}
               />
             </div>
@@ -78,7 +78,7 @@ export default function HeroBanner() {
 
 
           {/* stats card */}
-          <div className="mx-auto flex gap-8 relative animate-float-in lg:mx-0 lg:flex-col">
+          <div className="mx-auto hidden lg:flex gap-8 relative animate-float-in lg:mx-0 lg:flex-col">
 
             <div className="hidden justify-around items-center p-3 bg-surface/95 w-44 rounded-lg backdrop-blur border border-border sm:flex">
               <div>
@@ -87,12 +87,11 @@ export default function HeroBanner() {
                   {featured ? `$${featured.price.toFixed(2)}` : "New arrivals"}
                 </p>
               </div>
-              <Link
-                href={featured ? `/shop/${featured.id}` : "/shop"}
+              <div
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_16px_rgba(166,255,77,0.5)]"
               >
                 <Plus size={16} />
-              </Link>
+              </div>
             </div>
 
             <div className="flex justify-around ml-16 w-44 bg-surface/95 p-3 border border-border rounded-lg lg:flex-none">
@@ -121,7 +120,7 @@ export default function HeroBanner() {
         </div>
 
 
-        <div className="mt-16 flex items-center justify-between">
+        <div className="md:mt-16 flex items-center justify-between">
           <div className="flex flex-1 items-center justify-center gap-3 px-6">
             <span className="h-1.5 w-1.5 rounded-full bg-border" />
             <span className="h-px flex-1 max-w-24 bg-border" />

@@ -21,7 +21,7 @@ export default function DashboardShell({
   // Same state drives both: on desktop it toggles the sidebar between full
   // width and icon-only; on mobile it toggles between fully hidden and an
   // overlay drawer. Starts closed everywhere.
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <div className="flex min-h-screen">

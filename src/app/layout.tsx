@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ScrollToTopButton from "@/components/shared/ScrollToTopButton";
 
 export const metadata: Metadata = {
   title: "Marchand — Shop",
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
+        <ScrollToTopButton />
       </body>
     </html>
   );
