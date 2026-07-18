@@ -3,12 +3,29 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Package, Users, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/lib/types";
 import banner from "@/assets/bannerHeadphone.webp"
 import Image from "next/image";
 
+const floatUp = {
+  animate: {
+    y: [0, -10, 0],
+  },
+};
 
+const floatDown = {
+  animate: {
+    y: [0, 10, 0],
+  },
+};
+
+const floatTransition = {
+  duration: 8,
+  repeat: Infinity,
+  ease: "easeInOut" as const,
+};
 
 export default function HeroBanner() {
   const [productCount, setProductCount] = useState<number | null>(null);
@@ -64,7 +81,7 @@ export default function HeroBanner() {
                 src={banner}
                 alt="Featured product"
                 className="relative h-full lg:w-[500px] w-[400px] object-cover"
-                // style={{ filter: "drop-shadow(0 0 40px rgba(166, 255, 77, 0.15))" }}
+              // style={{ filter: "drop-shadow(0 0 40px rgba(166, 255, 77, 0.15))" }}
               />
             </div>
 
@@ -78,9 +95,14 @@ export default function HeroBanner() {
 
 
           {/* stats card */}
-          <div className="mx-auto hidden lg:flex gap-8 relative animate-float-in lg:mx-0 lg:flex-col">
+          <div className="mx-auto hidden lg:flex gap-12 relative animate-float-in lg:mx-0 lg:flex-col">
 
-            <div className="hidden justify-around items-center p-3 bg-surface/95 w-44 rounded-lg backdrop-blur border border-border sm:flex">
+            <motion.div
+              variants={floatUp}
+              animate="animate"
+              transition={floatTransition}
+              className="hidden justify-around items-center p-3 bg-surface/95 w-44 rounded-lg backdrop-blur border border-border sm:flex"
+            >
               <div>
                 <p className="text-xs text-muted">{featured?.category ?? "Featured"}</p>
                 <p className="font-display text-base font-bold text-primary">
@@ -92,9 +114,14 @@ export default function HeroBanner() {
               >
                 <Plus size={16} />
               </div>
-            </div>
+            </motion.div>
 
-            <div className="flex justify-around ml-16 w-44 bg-surface/95 p-3 border border-border rounded-lg lg:flex-none">
+            <motion.div
+              variants={floatDown}
+              animate="animate"
+              transition={floatTransition}
+              className="flex justify-around ml-16 w-44 bg-surface/95 p-3 border border-border rounded-lg lg:flex-none"
+            >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
                 <Package size={18} />
               </span>
@@ -104,9 +131,14 @@ export default function HeroBanner() {
                 </p>
                 <p className="mt-1 text-xs text-muted">All Products</p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="flex justify-around w-44 bg-surface/95 p-3 border border-border rounded-lg lg:flex-none">
+            <motion.div
+              variants={floatUp}
+              animate="animate"
+              transition={floatTransition}
+              className="flex justify-around w-44 bg-surface/95 p-3 border border-border rounded-lg lg:flex-none"
+            >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
                 <Users size={18} />
               </span>
@@ -114,7 +146,7 @@ export default function HeroBanner() {
                 <p className="text-xs text-muted">Happy Clients</p>
                 <p className="font-display text-lg font-bold leading-none text-foreground">752+</p>
               </div>
-            </div>
+            </motion.div>
           </div>
 
         </div>

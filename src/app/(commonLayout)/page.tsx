@@ -1,7 +1,7 @@
 import HeroBanner from "@/components/Home/HeroBanner";
 import HeroDealBanner from "@/components/Home/HeroDealBanner";
 import LatestProducts from "@/components/Home/LatestProducts";
-import ReviewMarquee from "@/components/Home/Reviewmarquee";
+import Reviews from "@/components/Home/Review/Reviews";
 import SpecialImage from "@/components/Home/SpecialImage";
 
 export default function HomePage() {
@@ -11,7 +11,7 @@ export default function HomePage() {
       <LatestProducts />
       <HeroDealBanner />
       <SpecialImage/>
-      <ReviewMarquee/>
+      <Reviews/>
     </>
   );
 }
