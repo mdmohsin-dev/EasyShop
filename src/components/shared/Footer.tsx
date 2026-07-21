@@ -47,7 +47,6 @@ export default function Footer() {
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Account</p>
             <ul className="mt-3 flex flex-col gap-2 text-sm">
               <li><Link href="/login" className="text-foreground/75 hover:text-foreground">Log in</Link></li>
-              <li><Link href="/register" className="text-foreground/75 hover:text-foreground">Register</Link></li>
               <li><Link href="/dashboard" className="text-foreground/75 hover:text-foreground">Dashboard</Link></li>
               <li><Link href="/dashboard/orders" className="text-foreground/75 hover:text-foreground">Orders</Link></li>
             </ul>

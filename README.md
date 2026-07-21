@@ -33,8 +33,6 @@ npm run dev
 
 ## How auth/roles work
 
-- Everyone who registers through `/register` becomes a `CUSTOMER` — the `role`
-  field is explicitly blocked from client input in `lib/auth.ts`
   (`input: false`) so nobody can promote themselves to `ADMIN` by tampering
   with the signup request.
 - The one `ADMIN` account is created by `npx prisma db seed`, from

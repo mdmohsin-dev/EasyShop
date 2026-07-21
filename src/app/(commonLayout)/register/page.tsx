@@ -71,7 +71,7 @@ export default function RegisterPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex justify-center">
+            <div className="flex justify-center border">
               <button
                 type="button"
                 onClick={() => fileRef.current?.click()}
