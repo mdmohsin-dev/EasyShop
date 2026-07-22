@@ -1,6 +1,7 @@
 import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import PromoMarquee from "@/components/shared/PromoMarquee";
+import PromoModal from "@/components/shared/PromoModal";
 import { CartProvider } from "@/context/CartContext";
 
 export default function CommonLayout({ children }: { children: React.ReactNode }) {
@@ -10,6 +11,7 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
       <Navbar />
       <main className="flex-1 pt-24">{children}</main>
       <Footer/>
+       <PromoModal />
     </CartProvider>
   );
 }
